@@ -1,0 +1,18 @@
+import time
+import busio
+import board
+import adafruit_lidarlite
+import adafruit_ht16k33.segments
+
+i2c = busio.I2C(board.SCL, board.SDA)
+
+sensor = adafruit_lidarlite.LIDARLite(i2c)
+display = adafruit_ht16k33.segments.Seg7x4(i2c)
+
+while True:
+    try:
+        display.print(sensor.distance)
+    except RuntimeError as e:
+        # If we get a reading error, just print it and keep truckin'
+        print(e)
+    time.sleep(0.5)
